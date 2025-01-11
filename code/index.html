@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- 
+---nomes vairaveis -> Descrição----  
+ias= IAS  linha 10 
+apoio_id_def = Valor de apoio por cada Individuo com defeciencia superior a 65%  linha 12
+percent - percentagem de apoio por cada dependente [ 0 dependendtes , 1 dependednte , 2 dependentes , 3 dependentes , 4 dependentes] linha 14
+capacitacao - Valor Correspondendte ao Nº de Individuos no Agregado familiar [1,2,3,4,5,6] linha 17 
+val_tipologia = Valor tipologia correspondednte ao tamanho do agregado [ tamanho agregado= 1  , tamanho agregado= 2 , tamanho agregado= 3, tamanho agregado= 4, tamanho agregado= 5,tamanho agregado= 6] linha 18
+val_fm = Valor do Apoio para familias mono parentais linha 21
+
+CAMPOS DE PREENCHIMENTO------------------------------------------
+ano_apoio = Ano do Apoio
+vr=valor da renda
+RENDIMENTOS-------------------------------------------
+vb- Vencimento Base /
+pservico - Prestação de Serviços /
+pa - Pensão de alimentos / 
+sd -Subsídio de Desemprego/
+pi - Pensão Invalidez /
+cd- Complemento por Dependência /
+rsi - Rendimento social de inserção (RSI) / 
+sdoenca- Subsídio de doença /
+psi - Prestação Social para a Inclusão /
+reforma- Reforma /
+ps- Pensão de Sobrevivência / 
+csi- Complemento solidário para idosos / 
+fgadm -Fundo de Garantia de Alimentos Devidos a Menores /
+--------------------------------------------------------------
+Agregado Familiar----------------------------------------
+n_agregado- Nº de Pessoas no Agregado /
+n_dependentes_com_def- Pessoas com deficiência superior a 60%  / 
+n_dependentes-Dependentes até 26 anos /
+n-65- Pessoas com mais de 65 anos /
+fm- Familía Monoparental/
+--------------------------------------------------------------
+-->
+
+    <form id="calculadora" action="">
+        <h1> Simulação de Apoio RADA</h1>
+
+        <div class="ano_renda_container">
+
+            <div class="input_container container_ano">
+                <label class="label"> Ano do Apoio </label>
+                <span class="sub_text">Nº de anos que beneficiou do apoio</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Ano do Apoio" id="ano_apoio" value=0 min="0" max="10"
+                        required>
+                    <div class="arrow_up" onclick="addValue('ano_apoio')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('ano_apoio')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="input_container container_ano input_rendimentos">
+                <label class="label"> Valor da renda</label>
+                <span class="sub_text">Indicar o valor da renda mensal</span>
+                <div class="cont_inp">
+                    <input class="input" type="number" name="Valor da renda" id="vr" step="0.01" value="0" min="1"
+                        required>
+                    <i class="euro_icon">€</i>
+                </div>
+            </div>
+
+            <div class="input_container container_ano input_rendimentos ae">
+                <label class="label"> Valor do Apoio do Estado </label>
+                <div class="cont_inp">
+                    <input class="input" type="number" name="Valor da renda" id="ae" step="0.01" value=0 min="0"
+                        required>
+                    <i class="euro_icon">€</i>
+                </div>
+            </div>
+
+
+            <div class="input_container checkbox " id="cl_box">
+                <label class="label">Coleta Liquida</label>
+                <input class="input" type="checkbox" name="Coleta liquida" id="cl">
+            </div>
+
+        </div>
+
+        <div id="coleta_selected">
+
+            <div class="separator">
+                <h5>Rendimentos Anuais</h5>
+                <div class="line"></div>
+            </div>
+            <div class="rendimentos_container">
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Rendimento Global</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento Global" id="rg" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Coleta Líquida</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento Global" id="cl_field" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div id="no_coleta">
+
+            <div class="separator">
+                <h5>Rendimentos Mensais</h5>
+                <div class="line"></div>
+            </div>
+            <div class="rendimentos_container">
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Vencimento Base</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Vencimento Base" id="vb" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento de Trabalho Dependente</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de Trabalho Dependente" id="rtd" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento Empresariais e Profissionais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de Trabalho Dependente" id="rep" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento de Capitais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de capitais" id="rc" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento Prediais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento prediais" id="rp" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Prestação de Serviços</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestação de Serviços" id="pservico" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Pensão de Alimentos</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão de alimentos" id="pa" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Subsídio de Desemprego</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Subsídio de Desemprego" id="sd" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Pensões</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensões" id="pens" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Pensão de Invalidez</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão Invalidez" id="pi" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Complemento por Dependência</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Complemento por Dependência" id="cd" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">RSI <button class="dica" tooltip="Rendimento Social de Inserção"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento social de inserção" id="rsi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Subsídio de Doença</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Subsídio de Doença" id="sdoenca" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">PSI<button class="dica" tooltip="Prestação Social para a Inclusão"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestação Social para a Inclusão" id="psi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Reforma</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="reforma" id="reforma" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Pensão de Sobrevivência</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão de Sobrevivência" id="ps" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Prestações Sociais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestações Sociais" id="pso" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">CSI<button class="dica" tooltip="Complemento Solidário para Idosos"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Complemento solidário para idosos" id="csi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos ">
+                    <label class="label">FGADM<button class="dica"
+                            tooltip="Fundo de Garantia de Alimentos Devidos a Menores" tooltip-position='right'> <svg
+                                viewBox="0 0 5 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Fundo de Garantia de Alimentos Devidos a Menores"
+                            id="fgadm" step="0.01" value="0" min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="separator">
+            <h5>Agregado Familiar</h5>
+            <div class="line"></div>
+        </div>
+
+        <div class="agregado_container">
+            <div class="input_container">
+                <label class="label">Nº de pessoas no agregado</label>
+                <span class="sub_text">Capitação</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Nº de Pessoas no Agregado" id="n_agregado" value="1"
+                        min="1" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_agregado')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_agregado')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Pessoas com deficiência superior a 60%</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Pessoas com deficiência superior a 60%" id="n_defeciencia"
+                        value="0" min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_defeciencia')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_defeciencia')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Dependentes até 26 anos com deficiência superior a 60%</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Dependentes até 26 anos com deficiência superior a 60%"
+                        id="n_dependentes_com_def" value="0" min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_dependentes_com_def')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_dependentes_com_def')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Dependentes até 26 anos</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Dependentes até 26 anos " id="n_dependentes" value="0"
+                        min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_dependentes')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_dependentes')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Pessoas com mais de 65 anos</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Pessoas com mais de 65 anos" id="n_65" value="0" min="0"
+                        max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_65')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_65')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input_container checkbox ">
+            <label class="label">Família Monoparental</label>
+            <input class="input" type="checkbox" name="Familía Monoparental" id="fm">
+        </div>
+
+
+
+
+        <div id="resultados" class="invisible">
+            <div id="display_resultados">
+                <h1>Resultado</h1>
+                <div class="container_resul">
+                    <div class="resul_row">
+                        <p>Rendimento Mensal Liquido</p>
+                        <p id="valor_mensais_corr"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Valores Anuais</p>
+                        <p id="valor_anuais"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Rendimento Mensal Corrigido</p>
+                        <p id="valor_rmc"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Valor Máximo do Apoio</p>
+                        <p id="valor_apoio_maximo"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="resul_finais">
+                <div class="col col1"><span>Tipologia Máxima</span>
+                    <div id="resul_tipologia"></div>
+                </div>
+                <div class="col col2"><span>Valor do Apoio</span>
+                    <p class="sub_text">mensal</p>
+                    <div id="resul_apoio"></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div id="display_erro" class="invisible">
+            <div class=" display_erro " id="error_content"> </div>
+        </div>
+        <div>
+            <input class="btn" type="submit" id="submit" value="Calcular" onclick="submitForm()">
+            <input class="btn invisible" type="button" id="clean" value="Limpar" onclick="cleanForm()">
+        </div>
+    </form>
+</body>
+
+<script src="script.js"></script>
+
+</html>

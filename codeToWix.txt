@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador</title>
+</head>
+<style>
+    @font-face {
+        font-family: "myriad pro";
+        src: url("https://static.wixstatic.com/ufonts/9e6721_460dad129a5e4a0e8e2e2dbc34fd84fa/woff2/file.woff2");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "myriad pro";
+        src: url("https://static.wixstatic.com/ufonts/b84942_0b48c1dc54cb4f67bc7f7814a65280e1/woff2/file.woff2");
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "myriad pro";
+        src: url("https://static.wixstatic.com/ufonts/9e6721_460dad129a5e4a0e8e2e2dbc34fd84fa/woff2/file.woff2");
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: "myriad pro";
+        src: url("https://static.wixstatic.com/ufonts/b84942_0b48c1dc54cb4f67bc7f7814a65280e1/woff2/file.woff2");
+        font-weight: bold;
+        font-style: italic;
+    }
+
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    h1 {
+        font-family: "myriad pro";
+        font-size: 38px;
+        color: #9ED7F5;
+        margin: 0;
+        margin-bottom: 35px;
+    }
+
+    label {
+        font-family: myriad pro;
+        color: #001629;
+
+    }
+
+    .none {
+        display: none !important;
+    }
+
+    #cl_box {
+        margin: 0;
+        align-items: center;
+        height: 100%;
+    }
+
+    .ano_renda_container .input_container:nth-child(2) .sub_text {
+        margin-bottom: 10px;
+    }
+
+    .ano_renda_container .cont_inp {
+        height: 40px;
+    }
+
+    .ano_renda_container {
+        column-gap: 40px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .ano_renda_container .ae label {
+        margin-bottom: 10px;
+    }
+
+
+
+
+    .agregado_input_container {
+        margin-top: 10px;
+    }
+
+    .rendimentos_container .cont_inp {
+        margin-top: 10px;
+    }
+
+
+
+    .container_ano {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .input_container input {
+        font-weight: 700;
+        color: #001629;
+
+    }
+
+    .sub_text {
+        font-family: myriad pro;
+        color: #001629;
+    }
+
+    .separator {
+        font-family: myriad pro;
+        font-weight: 700;
+        font-size: 25px;
+        color: #00437A;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+        margin-bottom: 30px;
+    }
+
+    .separator h5 {
+        white-space: nowrap;
+        margin: 0;
+        margin-right: 30px;
+        line-height: 13px;
+    }
+
+    .separator .line {
+        width: 100%;
+        width: -moz-available;
+        /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available;
+        /* Mozilla-based browsers will ignore this. */
+        width: fill-available;
+        height: 1px;
+        background-color: #9ED7F5;
+    }
+
+    .euro_icon {
+        font-family: myriad pro;
+    }
+
+
+    form {
+        max-width: 1226px;
+        height: auto;
+        border: solid 1px #001629;
+        padding: 40px;
+        background-color: white;
+    }
+
+    .rendimentos_container {
+        display: grid;
+        column-gap: 40px;
+        row-gap: 30px;
+        grid-template-columns: auto auto auto;
+        margin-bottom: 40px;
+    }
+
+    .input_rendimentos {
+        flex-grow: 1;
+        flex-basis: auto;
+
+    }
+
+    .input_container .label {
+        font-size: 18px;
+        font-weight: 400;
+
+    }
+
+    .input_rendimentos input {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        font-size: 18px;
+        width: 100%;
+        height: 100%;
+        text-align: end;
+        border: 0;
+        margin: 0;
+        padding: 0;
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+
+    input:focus~.euro_icon,
+    input:focus {
+
+        outline: none;
+        border: 2px solid #9ED7F5;
+        border-radius: 0;
+
+    }
+
+    input:invalid.error {
+        border: 2px solid red;
+        background-color: #ffdddd;
+    }
+
+    .input_active {
+
+        border: 3px solid #63c9ff !important;
+        transform: 500ms all ease-in;
+    }
+
+    .cont_inp {
+        display: flex;
+        align-items: center;
+        height: 45px;
+        text-align: end;
+        border: 1px solid #9ED7F5;
+        width: 100%;
+    }
+
+    .euro_icon {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgb(255, 255, 255);
+        background-color: #9ED7F5;
+        width: 30%;
+        height: 100%;
+    }
+
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+
+    .agregado_container {
+        display: grid;
+        column-gap: 40px;
+        row-gap: 30px;
+        grid-template-columns: auto auto auto;
+
+
+    }
+
+    .agregado_container .input_container .erro {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: #e95656 2px solid;
+        border-radius: 0;
+    }
+
+
+
+
+    .agregado_container .input_container {
+
+        display: flex;
+        flex-direction: column;
+        flex-basis: 30%;
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+
+    .input_container.input_rendimentos {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+    }
+
+
+
+
+
+
+    .checkbox {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0 15px;
+        align-items: center;
+        align-self: self-start;
+        justify-content: start;
+        margin-top: 25px;
+    }
+
+    .checkbox input {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .sub_text {
+        font-weight: 700;
+        font-size: 13px;
+
+    }
+
+    .agregado_input_container {
+        display: flex;
+        flex-direction: row;
+        gap: 0px 30px;
+    }
+
+    .agregado_input_container input {
+        width: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: end;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #9ED7F5;
+        text-align: center;
+        transform: 500ms all ease-in;
+    }
+
+    .arrow_up,
+    .arrow_down {
+        width: 40px;
+        background-color: #9ED7F5;
+        height: 40px;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+
+    .arrow_up:hover,
+    .arrow_down:hover {
+        transform: scale(1.1);
+        transition: transform ease-in-out 500ms;
+    }
+
+    .arrow_up svg,
+    .arrow_down svg {
+        width: 50%;
+        stroke-width: 2px;
+    }
+
+    #display_resultados {
+        margin-top: 50px;
+    }
+
+
+    #clean {
+        border: 1px solid #00437A;
+        background: white;
+        color: #001629;
+    }
+
+    .btn {
+        font-family: myriad pro;
+        font-weight: 400;
+        letter-spacing: 0.065em;
+        text-transform: uppercase;
+        width: 205px;
+        height: 45px;
+        background-color: #00437A;
+        outline: 0;
+        border: 0;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+        margin-top: 40px;
+        margin-right: 30px;
+    }
+
+    .resul_finais .sub_text {
+        margin: 0;
+    }
+
+    .container_resul {
+        display: flex;
+        flex-direction: column;
+        font-family: myriad pro;
+        font-size: 18px;
+    }
+
+    .container_resul .resul_row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: #9ED7F5 solid 2px;
+
+    }
+
+    .container_resul .resul_row p:nth-child(2) {
+        font-weight: 700;
+    }
+
+    .resul_finais {
+        margin-top: 50px;
+        display: flex;
+        justify-content: end;
+        align-items: flex-end;
+        gap: 50px;
+    }
+
+    .resul_finais .col div {
+        height: 80px;
+        width: 160px;
+        border: 2px solid #9ED7F5;
+        color: #9ED7F5;
+        margin-top: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: myriad pro;
+        font-weight: 700;
+        font-size: 38px;
+    }
+
+    .resul_finais .col span {
+        font-family: myriad pro;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .resul_finais .col2 div {
+        background-color: #7EC9F2;
+        color: white;
+    }
+
+    .display_erro {
+        margin-top: 40px;
+        border: #e95656 2px solid;
+        color: #e95656;
+        text-align: center;
+        padding: 30px;
+        display: block;
+        font-size: 18px;
+        font-family: myriad pro;
+    }
+
+    .display_erro a {
+        color: #7EC9F2;
+        display: block;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+
+    .invisible {
+        visibility: hidden;
+        display: none;
+        transition: all 1s ease-in-out;
+    }
+
+    .visible {
+        visibility: visible;
+        display: inline;
+        transition: all 1s ease-in-out;
+    }
+
+
+
+
+
+    span,
+    div,
+    p,
+    h1,
+    label,
+    h5 {
+        user-select: none;
+        /* standard syntax */
+        -webkit-user-select: none;
+        /* webkit (safari, chrome) browsers */
+        -moz-user-select: none;
+        /* mozilla browsers */
+        -khtml-user-select: none;
+        /* webkit (konqueror) browsers */
+        -ms-user-select: none;
+        /* IE10+ */
+    }
+
+    /* TOOLTIP ------------------------------------------------------*/
+    label .dica {
+        margin: auto;
+        background: #7EC9F2;
+        font-family: Arial;
+        color: #ffffff;
+        outline: 0;
+        border: 0;
+        border-radius: 100px;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
+    label .dica svg {
+        margin: 2px;
+        height: 15px;
+    }
+
+
+    [tooltip] {
+        margin: 20px;
+        position: relative;
+        cursor: pointer;
+        font-family: myriad pro;
+    }
+
+    [tooltip]::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 4px 6px 0 6px;
+        border-style: solid;
+        border-color: #00437A transparent;
+        z-index: 100;
+        opacity: 0;
+    }
+
+    [tooltip]::after {
+        content: attr(tooltip);
+        position: absolute;
+        left: 50%;
+        top: -6px;
+        transform: translateX(-50%) translateY(-100%);
+        background: #00437A;
+        text-align: center;
+        color: #fff;
+        padding: 5px 5px;
+        font-size: 13px;
+        width: 10vw;
+        min-width: 60px;
+        max-width: 150px;
+        border-radius: 5px;
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    label .dica:hover {
+        background-color: #00437A;
+    }
+
+    label .dica:hover::after,
+    [tooltip]:hover::before {
+        opacity: 1
+    }
+
+    /* Position tooltip*/
+
+    [tooltip-position='left']::before {
+        left: 0%;
+        top: 50%;
+        margin-left: -12px;
+        transform: translatey(-50%) rotate(-90deg)
+    }
+
+    [tooltip-position='top']::before {
+        left: 50%;
+    }
+
+    [tooltip-position='bottom']::before {
+        top: 100%;
+        margin-top: 8px;
+        transform: translateX(-50%) translatey(-100%) rotate(-180deg)
+    }
+
+    [tooltip-position='right']::before {
+        left: 100%;
+        top: 50%;
+        margin-left: 1px;
+        transform: translatey(-50%) rotate(90deg)
+    }
+
+    [tooltip-position='left']::after {
+        left: 0%;
+        top: 50%;
+        margin-left: -8px;
+        transform: translateX(-100%) translateY(-50%);
+    }
+
+    [tooltip-position='top']::after {
+        left: 50%;
+    }
+
+    [tooltip-position='bottom']::after {
+        top: 100%;
+        margin-top: 8px;
+        transform: translateX(-50%) translateY(0%);
+    }
+
+    [tooltip-position='right']::after {
+        left: 100%;
+        top: 50%;
+        margin-left: 8px;
+        transform: translateX(0%) translateY(-50%);
+    }
+
+
+    /* END TOOLTIP --------------------------------------------------------------------*/
+
+
+
+
+    /* MEDIA QUERIES RESPONSIVE */
+
+    @media only screen and (min-width: 1200px) {
+        .rendimentos_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 30px;
+            grid-template-columns: auto auto auto auto;
+            margin-bottom: 40px;
+        }
+
+
+        .agregado_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 30px;
+            grid-template-columns: auto auto auto auto;
+
+
+        }
+
+        .ano_renda_container {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+    }
+
+    @media only screen and (max-width: 929px) and (min-width: 685px) {
+
+
+        .ano_renda_container {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-bottom: 30px;
+        }
+
+        .rendimentos_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 30px;
+            grid-template-columns: auto auto;
+            margin-bottom: 40px;
+        }
+
+        .agregado_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 30px;
+            grid-template-columns: auto auto;
+
+
+        }
+
+        .agregado_container .input_container {
+
+            flex-basis: 30%;
+
+        }
+
+        .checkbox {
+            flex-basis: 100%;
+
+        }
+    }
+
+
+
+
+
+    @media only screen and (max-width: 685px) {
+        form {
+            padding: 20px;
+        }
+
+        .ano_renda_container {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        #cl_box {
+            margin-bottom: 25px;
+        }
+
+        .separator .line {
+            display: none;
+        }
+
+        h1 {
+            font-family: myriad pro;
+            font-size: 25px;
+            color: #9ED7F5;
+            margin: 0;
+            margin-bottom: 35px;
+            line-height: 28px;
+        }
+
+        .input_container .label {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        [tooltip]::after {
+            font-size: 12px;
+            max-width: 40vw;
+            width: max-content;
+        }
+
+        .resul_finais .col div {
+            height: 80px;
+            width: 160px;
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 38px;
+        }
+
+
+
+        .resul_finais .col span {
+            font-family: myriad pro;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .cont_inp {
+            height: 40px;
+        }
+
+        .rendimentos_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 20px;
+            grid-template-columns: auto;
+            margin-bottom: 40px;
+        }
+
+        .agregado_container {
+            display: grid;
+            column-gap: 40px;
+            row-gap: 30px;
+            grid-template-columns: auto;
+
+
+        }
+
+        input {
+            font-size: 16px !important;
+        }
+
+
+        .agregado_input_container {
+            gap: 0px 15px;
+        }
+
+        .agregado_container .input_container {
+            width: 100%;
+            flex-basis: auto;
+
+        }
+
+        .agregado_input_container .input {
+            width: 70%;
+            flex-shrink: 2;
+        }
+
+        .checkbox {
+            flex-basis: auto;
+            align-self: flex-end;
+
+        }
+
+        .checkbox .input {
+            width: 30px;
+
+        }
+
+        #display_resultados h1 {
+            margin-bottom: 30px;
+        }
+
+        .container_resul {
+            font-size: 16px;
+            flex-basis: auto;
+
+        }
+
+        .resul_finais {
+            gap: 0 20px;
+            margin-top: 35px;
+            margin-bottom: 35px;
+            justify-content: space-between;
+        }
+
+        .resul_finais .col div {
+            width: auto;
+            height: auto;
+            padding: 15px;
+            font-size: 27px;
+        }
+
+
+        .btn {
+            margin-top: 20px;
+            margin-right: 0;
+            width: 100%;
+        }
+
+        .display_erro {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+
+    }
+</style>
+
+<body>
+
+    <!-- 
+---nomes vairaveis -> Descrição----  
+ias= IAS  linha 10 
+apoio_id_def = Valor de apoio por cada Individuo com defeciencia superior a 65%  linha 12
+percent - percentagem de apoio por cada dependente [ 0 dependendtes , 1 dependednte , 2 dependentes , 3 dependentes , 4 dependentes] linha 14
+capacitacao - Valor Correspondendte ao Nº de Individuos no Agregado familiar [1,2,3,4,5,6] linha 17 
+val_tipologia = Valor tipologia correspondednte ao tamanho do agregado [ tamanho agregado= 1  , tamanho agregado= 2 , tamanho agregado= 3, tamanho agregado= 4, tamanho agregado= 5,tamanho agregado= 6] linha 18
+val_fm = Valor do Apoio para familias mono parentais linha 21
+
+CAMPOS DE PREENCHIMENTO------------------------------------------
+ano_apoio = Ano do Apoio
+vr=valor da renda
+RENDIMENTOS-------------------------------------------
+vb- Vencimento Base /
+pservico - Prestação de Serviços /
+pa - Pensão de alimentos / 
+sd -Subsídio de Desemprego/
+pi - Pensão Invalidez /
+cd- Complemento por Dependência /
+rsi - Rendimento social de inserção (RSI) / 
+sdoenca- Subsídio de doença /
+psi - Prestação Social para a Inclusão /
+reforma- Reforma /
+ps- Pensão de Sobrevivência / 
+csi- Complemento solidário para idosos / 
+fgadm -Fundo de Garantia de Alimentos Devidos a Menores /
+--------------------------------------------------------------
+Agregado Familiar----------------------------------------
+n_agregado- Nº de Pessoas no Agregado /
+n_dependentes_com_def- Pessoas com deficiência superior a 60%  / 
+n_dependentes-Dependentes até 26 anos /
+n-65- Pessoas com mais de 65 anos /
+fm- Familía Monoparental/
+--------------------------------------------------------------
+-->
+
+    <form id="calculadora" action="">
+        <h1> Simulação de Apoio RADA</h1>
+
+        <div class="ano_renda_container">
+
+            <div class="input_container container_ano">
+                <label class="label"> Ano do Apoio </label>
+                <span class="sub_text">Nº de anos que beneficiou do apoio</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Ano do Apoio" id="ano_apoio" value=0 min="0" max="10"
+                        required>
+                    <div class="arrow_up" onclick="addValue('ano_apoio')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('ano_apoio')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="input_container container_ano input_rendimentos">
+                <label class="label"> Valor da renda</label>
+                <span class="sub_text">Indicar o valor da renda mensal</span>
+                <div class="cont_inp">
+                    <input class="input" type="number" name="Valor da renda" id="vr" step="0.01" value="0" min="1"
+                        required>
+                    <i class="euro_icon">€</i>
+                </div>
+            </div>
+
+            <div class="input_container container_ano input_rendimentos ae">
+                <label class="label"> Valor do Apoio do Estado </label>
+                <div class="cont_inp">
+                    <input class="input" type="number" name="Valor da renda" id="ae" step="0.01" value=0 min="0"
+                        required>
+                    <i class="euro_icon">€</i>
+                </div>
+            </div>
+
+
+            <div class="input_container checkbox " id="cl_box">
+                <label class="label">Coleta Liquida</label>
+                <input class="input" type="checkbox" name="Coleta liquida" id="cl">
+            </div>
+
+        </div>
+
+        <div id="coleta_selected">
+
+            <div class="separator">
+                <h5>Rendimentos Anuais</h5>
+                <div class="line"></div>
+            </div>
+            <div class="rendimentos_container">
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Rendimento Global</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento Global" id="rg" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Coleta Líquida</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento Global" id="cl_field" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div id="no_coleta">
+
+            <div class="separator">
+                <h5>Rendimentos Mensais</h5>
+                <div class="line"></div>
+            </div>
+            <div class="rendimentos_container">
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Vencimento Base</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Vencimento Base" id="vb" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento de Trabalho Dependente</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de Trabalho Dependente" id="rtd" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento Empresariais e Profissionais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de Trabalho Dependente" id="rep" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento de Capitais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento de capitais" id="rc" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Rendimento Prediais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento prediais" id="rp" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Prestação de Serviços</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestação de Serviços" id="pservico" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Pensão de Alimentos</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão de alimentos" id="pa" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Subsídio de Desemprego</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Subsídio de Desemprego" id="sd" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Pensões</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensões" id="pens" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Pensão de Invalidez</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão Invalidez" id="pi" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label"> Complemento por Dependência</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Complemento por Dependência" id="cd" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">RSI <button class="dica" tooltip="Rendimento Social de Inserção"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Rendimento social de inserção" id="rsi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Subsídio de Doença</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Subsídio de Doença" id="sdoenca" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">PSI<button class="dica" tooltip="Prestação Social para a Inclusão"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestação Social para a Inclusão" id="psi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Reforma</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="reforma" id="reforma" step="0.01" value=0 min="0"
+                            required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Pensão de Sobrevivência</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Pensão de Sobrevivência" id="ps" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">Prestações Sociais</label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Prestações Sociais" id="pso" step="0.01" value=0
+                            min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos">
+                    <label class="label">CSI<button class="dica" tooltip="Complemento Solidário para Idosos"
+                            tooltip-position='right'> <svg viewBox="0 0 5 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Complemento solidário para idosos" id="csi" step="0.01"
+                            value=0 min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+                <div class="input_container input_rendimentos ">
+                    <label class="label">FGADM<button class="dica"
+                            tooltip="Fundo de Garantia de Alimentos Devidos a Menores" tooltip-position='right'> <svg
+                                viewBox="0 0 5 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.69246 11.2261C1.35861 11.2261 1.12169 11.1453 0.981688 10.9838C0.852457 10.8222 0.787842 10.6068 0.787842 10.3376C0.787842 10.1653 0.80938 9.98223 0.852457 9.78838C0.895534 9.58376 0.954765 9.37915 1.03015 9.17453L2.43553 5.39453C2.52169 5.15761 2.56477 4.96915 2.56477 4.82915C2.56477 4.6353 2.50553 4.50069 2.38707 4.4253C2.26861 4.34992 2.11246 4.30684 1.91861 4.29607C1.73553 4.2853 1.54169 4.27992 1.33707 4.27992L1.45015 3.89223L4.06707 3.84376L2.03169 9.62684C1.98861 9.78838 1.95092 9.93376 1.91861 10.063C1.8863 10.1815 1.87015 10.2838 1.87015 10.3699C1.87015 10.5853 1.9563 10.693 2.12861 10.693C2.36553 10.693 2.59707 10.5691 2.82323 10.3215C3.04938 10.0738 3.23246 9.83146 3.37246 9.59453L3.66323 9.78838C3.45861 10.1222 3.19476 10.4453 2.87169 10.7576C2.54861 11.0699 2.15553 11.2261 1.69246 11.2261ZM3.954 2.06684C3.69553 2.06684 3.48015 1.98069 3.30784 1.80838C3.1463 1.63607 3.06553 1.43146 3.06553 1.19453C3.06553 0.968379 3.1463 0.769148 3.30784 0.59684C3.48015 0.424533 3.69553 0.338379 3.954 0.338379C4.18015 0.338379 4.374 0.424533 4.53553 0.59684C4.70784 0.769148 4.794 0.968379 4.794 1.19453C4.794 1.43146 4.70784 1.63607 4.53553 1.80838C4.374 1.98069 4.18015 2.06684 3.954 2.06684Z"
+                                    fill="white" />
+                            </svg>
+                        </button></label>
+                    <div class="cont_inp">
+                        <input class="input" type="number" name="Fundo de Garantia de Alimentos Devidos a Menores"
+                            id="fgadm" step="0.01" value="0" min="0" required>
+                        <i class="euro_icon">€</i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="separator">
+            <h5>Agregado Familiar</h5>
+            <div class="line"></div>
+        </div>
+
+        <div class="agregado_container">
+            <div class="input_container">
+                <label class="label">Nº de pessoas no agregado</label>
+                <span class="sub_text">Capitação</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Nº de Pessoas no Agregado" id="n_agregado" value="1"
+                        min="1" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_agregado')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_agregado')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Pessoas com deficiência superior a 60%</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Pessoas com deficiência superior a 60%" id="n_defeciencia"
+                        value="0" min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_defeciencia')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_defeciencia')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Dependentes até 26 anos com deficiência superior a 60%</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Dependentes até 26 anos com deficiência superior a 60%"
+                        id="n_dependentes_com_def" value="0" min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_dependentes_com_def')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_dependentes_com_def')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Dependentes até 26 anos</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Dependentes até 26 anos " id="n_dependentes" value="0"
+                        min="0" max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_dependentes')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_dependentes')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_container">
+                <label class="label">Pessoas com mais de 65 anos</label>
+                <span class="sub_text">Nº. de indivíduos</span>
+                <div class="agregado_input_container">
+                    <input class="input" type="number" name="Pessoas com mais de 65 anos" id="n_65" value="0" min="0"
+                        max="6" required>
+                    <div class="arrow_up" onclick="addValue('n_65')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 8L6.76285 2.80417C7.15918 2.3718 7.84082 2.3718 8.23715 2.80417L13 8"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow_down" onclick="takeValue('n_65')">
+                        <svg viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L8.23715 7.19583C7.84082 7.6282 7.15918 7.6282 6.76285 7.19583L2 2"
+                                stroke="white" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input_container checkbox ">
+            <label class="label">Família Monoparental</label>
+            <input class="input" type="checkbox" name="Familía Monoparental" id="fm">
+        </div>
+
+
+
+
+        <div id="resultados" class="invisible">
+            <div id="display_resultados">
+                <h1>Resultado</h1>
+                <div class="container_resul">
+                    <div class="resul_row">
+                        <p>Rendimento Mensal Liquido</p>
+                        <p id="valor_mensais_corr"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Valores Anuais</p>
+                        <p id="valor_anuais"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Rendimento Mensal Corrigido</p>
+                        <p id="valor_rmc"></p>
+                    </div>
+                    <div class="resul_row">
+                        <p>Valor Máximo do Apoio</p>
+                        <p id="valor_apoio_maximo"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="resul_finais">
+                <div class="col col1"><span>Tipologia Máxima</span>
+                    <div id="resul_tipologia"></div>
+                </div>
+                <div class="col col2"><span>Valor do Apoio</span>
+                    <p class="sub_text">mensal</p>
+                    <div id="resul_apoio"></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div id="display_erro" class="invisible">
+            <div class=" display_erro " id="error_content"> </div>
+        </div>
+        <div>
+            <input class="btn" type="submit" id="submit" value="Calcular" onclick="submitForm()">
+            <input class="btn invisible" type="button" id="clean" value="Limpar" onclick="cleanForm()">
+        </div>
+    </form>
+</body>
+
+<script>
+
+    //--------------------------------------------------------Variavies----------------------------------------------------------------------------------------------------------------------
+    /*Ler antes de modificar 
+    - Não pode alterar o nome da variavel apenas o seu valor. Se alterar o nome poderá por em causa a integridade do simulador
+    - Não Alterar mais nada fora de "Variaveis" e "Fim de Varaiveis"
+    -Para alterar o valor do Ias, apenas precisa de intruduzir na linha 12 o novo valor do ias( Ex: ias=553.2)
+    */
+
+
+    //IAS
+    const ias = 509.26;
+    // Valor de apoio por cada Individuo com defeciencia superior a 65% 
+    const apoio_id_def = ias * 0.10;
+    // Valor de desconto por cada dependednte
+    const percent = [ias * 0, ias * 0.1, ias * 0.15, ias * 0.2, ias * 0.2];
+    const inc_descontos_dependentes = [percent[1] + percent[0], percent[2] + percent[1], percent[3] + percent[2], percent[3] + percent[2] + percent[1]]
+    // Capacitação
+    const capacitacao = [0, ias * 0.05, ias * 0.09, ias * 0.12, ias * 0.14, ias * 0.15, ias * 0.16, ias * 0.17, ias * 0.18, ias, 0.19];
+    const agregado_apoio = [381, 535, 535, 535, 672, 675];
+    const val_tipologia = ['T1', 'T2', 'T3', 'T3', 'T4', 'T5'];
+    // Valor do Apoio para familias mono parentais
+    const val_fm = ias * 0.2;
+
+
+    //----------------------------------------------------------FIM VARIAVEIS ---------------------------------------------------------------------------------------------------
+
+
+    //NÃO ALTERAR CODIGO APARTIR DESTA LINHA !!!!
+
+
+    const form = document.getElementById('calculadora');
+    const fields = document.querySelectorAll('.input');
+    //Containers Para Injetar Valores
+    const resul_valor_mensais = document.getElementById('valor_mensais_corr');
+    const resul_valor_anuais = document.getElementById('valor_anuais');
+    const resul_valor_rmc = document.getElementById('valor_rmc');
+    const resul_valor_apoio_maximo = document.getElementById('valor_apoio_maximo');
+    const resul_tipologia = document.getElementById('resul_tipologia');
+    const resul_apoio = document.getElementById('resul_apoio');
+    const error_content = document.getElementById('error_content');
+    const input_agregado = document.getElementById('n_agregado');
+
+    //Containers
+    const display_resultados = document.getElementById('resultados');
+    const display_erro = document.getElementById('display_erro');
+
+
+    // btn
+    const btn_submit = document.getElementById('submit');
+    const btn_clean = document.getElementById('clean');
+
+
+
+    let sent = false; // verifica se o formulario já foi enviado
+    let ae, cl, vb, pservico, pa, sd, pi, cd, rsi, pens, rtd, tp, rc, rep, pso, sdoenca, psi, reforma, ps, csi, fgadm, ano_apoio, vr;
+    let n_agregado, n_defeciencia, n_dependentes_com_def, n_dependentes, n_65, fm;
+    let no_coleta, coleta;
+    let rg, cl_field;
+
+
+    function addValue(input) {
+        input = document.getElementById(input)
+
+        if (parseInt(input.value) < input.max) {
+            input.value = parseInt(input.value) + 1;
+        }
+
+    }
+
+    function takeValue(input) {
+        input = document.getElementById(input)
+        if (parseInt(input.value) > input.min) {
+            input.value = parseInt(input.value) - 1;
+
+        }
+
+    }
+    cl = document.getElementById('cl');
+    coleta = document.getElementById('coleta_selected');
+    no_coleta = document.getElementById('no_coleta');
+    coleta.classList.add("none");
+    cl.addEventListener('click', () => {
+        if (cl.checked) {
+            no_coleta.classList.add("none");
+            coleta.classList.remove("none");
+        } else {
+            no_coleta.classList.remove("none");
+            coleta.classList.add("none");
+        }
+    });
+
+
+
+    function submitForm() {
+
+
+
+
+        for (let i = 0; i < fields.length; i++) {
+            let a = parseInt(fields[i].value);
+            if (a < 0 || isNaN(a)) {
+                fields[i].value = 0;
+                console.log(fields[i].value);
+            }
+        }
+
+        let t_valor_anual = 0;
+        let t_valor_m_corregidos = 0;
+        let cont_num_agregado = 0;
+        let num_pessoas_agregado = 0;
+        ano_apoio = parseInt(document.getElementById('ano_apoio').value);
+        ae = parseInt(document.getElementById('ae').value);
+        vr = parseFloat(document.getElementById('vr').value);
+        vb = parseFloat(document.getElementById('vb').value);
+        pservico = parseFloat(document.getElementById('pservico').value);
+        pa = parseFloat(document.getElementById('pa').value);
+        sd = parseFloat(document.getElementById('sd').value);
+        pi = parseFloat(document.getElementById('pi').value);
+        cd = parseFloat(document.getElementById('cd').value);
+        rsi = parseFloat(document.getElementById('rsi').value);
+        sdoenca = parseFloat(document.getElementById('sdoenca').value);
+        psi = parseFloat(document.getElementById('psi').value);
+        reforma = parseFloat(document.getElementById('reforma').value);
+        ps = parseFloat(document.getElementById('ps').value);
+        csi = parseFloat(document.getElementById('csi').value);
+        fgadm = parseFloat(document.getElementById('fgadm').value);
+        n_agregado = parseInt(document.getElementById('n_agregado').value);
+        n_defeciencia = parseInt(document.getElementById('n_defeciencia').value);
+        n_dependentes_com_def = parseInt(document.getElementById('n_dependentes_com_def').value);
+        n_dependentes = parseInt(document.getElementById('n_dependentes').value);
+        n_65 = parseInt(document.getElementById('n_65').value);
+        fm = document.getElementById('fm').checked;
+
+        pens = parseFloat(document.getElementById('pens').value);
+        rtd = parseFloat(document.getElementById('rtd').value);
+        rp = parseFloat(document.getElementById('rp').value);
+        rc = parseFloat(document.getElementById('rc').value);
+        rep = parseFloat(document.getElementById('rep').value);
+        pso = parseFloat(document.getElementById('pso').value);
+
+        cl_field = parseFloat(document.getElementById('cl_field').value);
+        rg = parseFloat(document.getElementById('rg').value);
+
+        num_pessoas_agregado = n_agregado;
+        cont_num_agregado = n_65 + n_dependentes + n_defeciencia + n_dependentes_com_def;
+
+        display_erro.classList.remove("visible");
+        display_erro.classList.remove("visible");
+        btn_clean.classList.remove("visible");
+        display_resultados.classList.remove('visible');
+        input_agregado.classList.remove('erro');
+
+        if (vr <= 0) {
+            document.getElementById('vr').classList.add('error');
+        }
+
+        if (vb > 0) {
+            t_valor_m_corregidos += ((vb * 14) / 12)
+        }
+
+
+
+        if (pi > 0) {
+            t_valor_m_corregidos += ((pi * 14) / 12)
+        }
+
+        if (cd > 0) {
+            t_valor_m_corregidos += ((cd * 14) / 12)
+        }
+
+        if (reforma > 0) {
+            t_valor_m_corregidos += ((reforma * 14) / 12)
+        }
+
+        if (ps > 0) {
+            t_valor_m_corregidos += ((ps * 14) / 12)
+        }
+
+
+
+
+        t_valor_m_corregidos += pservico + sd + csi + pa + rsi + sdoenca + psi + fgadm + pens + rtd + rp + rc + rep + pso;
+        t_valor_anual += (vb + ps + cd + reforma) * 14 + ((pservico + pa + sd + rsi + sdoenca + psi + csi + fgadm + pens + rtd + rp + rc + rep + pso) * 12);
+
+        // Descontos 
+
+        let desc_n_dependentes = [percent[0], percent[1], percent[2] + inc_descontos_dependentes[0], percent[3] + inc_descontos_dependentes[1], percent[3] + inc_descontos_dependentes[3]];
+
+        let familia_monoparental = val_fm;
+        let tipologia = val_tipologia;
+        let resul_descontos = 0;
+        let resul_RMC;
+        let desconto_ano = false;
+        let apoiomensal = agregado_apoio[n_agregado - 1];
+
+
+        // Determina se aplica a dedução de apoio ao longo dos anos de benenficio 
+        if (n_dependentes_com_def > 0 || n_defeciencia > 0 || (fm && n_dependentes > 0 && t_valor_m_corregidos <= 2 * ias) || (fm && t_valor_m_corregidos <= 1 * ias) || (reforma * 14 === t_valor_anual) && reforma > 0) {
+            desconto_ano = true;
+        }
+
+        //tipologia 
+        if (n_agregado > 0) {
+            tipologia = tipologia[n_agregado - 1];
+        }
+
+
+        //nºagregado
+        if (n_agregado > 0) {
+            n_agregado = capacitacao[n_agregado - 1];
+        }
+        //n dependentes 
+        if (n_dependentes > 4) {
+            n_dependentes = desc_n_dependentes[4];
+        } else {
+            n_dependentes = desc_n_dependentes[n_dependentes];
+        }
+        // n_dependentes_com_def
+        if (n_dependentes_com_def > 4) {
+            n_dependentes_com_def = desc_n_dependentes[4];
+        } else {
+            n_dependentes_com_def = desc_n_dependentes[n_dependentes_com_def];
+        }
+
+        // defeciencia s_60
+        n_defeciencia = n_defeciencia * apoio_id_def;
+
+        // idosos com mias de 65 
+        n_65 = n_65 * apoio_id_def;
+
+        //familia mono parental
+        if (fm) {
+            fm = familia_monoparental;
+        } else {
+            fm = parseInt(0);
+        }
+        resul_descontos = n_agregado + n_dependentes + n_defeciencia + n_dependentes_com_def + n_65 + fm;
+        if (cl.checked) {
+            t_valor_m_corregidos = (rg - cl_field) / 12
+            t_valor_anual = rg
+        }
+
+        console.log(resul_descontos, resul_RMC, apoiomensal)
+
+        console.log(t_valor_anual);
+
+        resul_RMC = t_valor_m_corregidos - resul_descontos;
+        let a, b, c, w, z;
+        let valor_apoio;
+
+        // Valores ocultos -------------------
+        a = roundNumber(0.5 * ias);
+        b = roundNumber(resul_RMC);
+        c = roundNumber(4 * ias);
+        w = roundNumber(apoiomensal * 0.5);
+        z = roundNumber(apoiomensal * 0.1);
+        // -------------------------------------
+
+        const totalValorApoio = w - ((a - b) * ((w - z) / (a - c))) - // calculo do valor do apoio 
+            console.log("a" + a, "b" + b, "c" + c, "w" + w, "z" + z);
+        if (totalValorApoio >= apoiomensal * 0.5) {
+            valor_apoio = w;
+        } else {
+            valor_apoio = totalValorApoio;
+        }
+        console.log(valor_apoio, "va");
+
+        if (valor_apoio > vr && vr > 0) {
+            valor_apoio = vr;
+        } else {
+            valor_apoio = vr * 0.5;
+        }
+        console.log(valor_apoio, "va");
+
+        if (desconto_ano || ano_apoio <= 0) {
+            ano_apoio = 0
+        } else {
+            ano_apoio = ano_apoio - 1;
+            if (ano_apoio > 9) {
+                ano_apoio = 9;
+            }
+            valor_apoio = valor_apoio - (valor_apoio * 0.09 * ano_apoio)
+        }
+        if (ae > 0) {
+            valor_apoio = valor_apoio - ae;
+        }
+        valor_apoio = valor_apoio.toFixed(2);
+
+
+
+        //Resultados 
+
+
+        if (!isNaN(valor_apoio) && !isNaN(t_valor_anual) && !isNaN(t_valor_m_corregidos) && !isNaN(w) && !isNaN(resul_RMC)) {
+            if (vr <= 0) {
+                error_content.innerHTML = 'Por favor indique o valor da renda mensal';
+                display_erro.classList.add('visible');
+                btn_clean.classList.add("visible");
+            } else
+                if (valor_apoio > 0 && resul_RMC <= 4 * ias) {
+                    console.log("valor 2  " + valor_apoio);
+                    // Injetar valores 
+                    resul_valor_mensais.innerHTML = t_valor_m_corregidos.toFixed(2) + '€';
+                    resul_valor_anuais.innerHTML = t_valor_anual.toFixed(2) + '€';
+                    resul_valor_rmc.innerHTML = resul_RMC.toFixed(2) + '€';
+                    resul_valor_apoio_maximo.innerHTML = w.toFixed(2) + '€';
+                    resul_tipologia.innerHTML = tipologia;
+                    resul_apoio.innerHTML = valor_apoio + '€';
+
+
+
+                    btn_clean.classList.add("visible");
+                    display_resultados.classList.add('visible');
+                    btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+
+
+                } else {
+
+                    error_content.innerHTML = 'Não se enquadra nos parâmetros para receber o apoio <a href="https://www.bragahabit.com/_files/ugd/71f667_7c85568fea60487a9fe3c97185891c34.pdf">Consulte o Regulamento</a>';
+                    display_erro.classList.add('visible');
+                    btn_clean.classList.add("visible");
+                    btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+
+                }
+
+        } else {
+
+            error_content.innerHTML = 'Verifique se os campos foram preenchidos somente com números';
+            display_erro.classList.add('visible');
+            btn_clean.classList.add("visible");
+            btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    }
+
+
+    function cleanForm() {
+        display_erro.classList.remove("visible");
+        display_erro.classList.remove("visible");
+        btn_clean.classList.remove("visible");
+        input_agregado.classList.remove('erro');
+        display_resultados.classList.remove('visible');
+        document.getElementById('vr').classList.remove('error');
+        form.reset();
+
+    }
+
+    function roundNumber(number) {
+        return Math.round(number * 100) / 100;
+    }
+
+
+    // Impedir fazer refresh ao submeter o formulario NAO APAGAR
+
+    function handleForm(event) { event.preventDefault(); }
+    form.addEventListener('submit', handleForm);
+
+</script>
+
+</html>
