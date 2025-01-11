@@ -7,7 +7,7 @@
 
 
 //IAS
-const ias = 509.26;
+const ias = 522.50;
 // Valor de apoio por cada Individuo com defeciencia superior a 65% 
 const apoio_id_def = ias * 0.10;
 // Valor de desconto por cada dependednte
