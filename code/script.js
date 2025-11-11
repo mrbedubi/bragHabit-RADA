@@ -266,8 +266,8 @@ function submitForm() {
     }
     console.log(valor_apoio, "va");
 
-    if (valor_apoio > vr && vr > 0) {
-        valor_apoio = vr;
+    if (valor_apoio > vr * 0.5 && vr > 0) {
+        valor_apoio = vr * 0.5;
     }
     console.log(valor_apoio, "va");
 
