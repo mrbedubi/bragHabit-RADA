@@ -1330,7 +1330,6 @@ fm- Familía Monoparental/
 </body>
 
 <script>
-
     //--------------------------------------------------------Variavies----------------------------------------------------------------------------------------------------------------------
     /*Ler antes de modificar 
     - Não pode alterar o nome da variavel apenas o seu valor. Se alterar o nome poderá por em causa a integridade do simulador
@@ -1340,12 +1339,14 @@ fm- Familía Monoparental/
 
 
     //IAS
-    const ias = 522.50;
+    const ias = 509.26;
     // Valor de apoio por cada Individuo com defeciencia superior a 65% 
     const apoio_id_def = ias * 0.10;
     // Valor de desconto por cada dependednte
     const percent = [ias * 0, ias * 0.1, ias * 0.15, ias * 0.2, ias * 0.2];
-    const inc_descontos_dependentes = [percent[1] + percent[0], percent[2] + percent[1], percent[3] + percent[2], percent[3] + percent[2] + percent[1]]
+    const inc_descontos_dependentes = [percent[0], percent[1], percent[2], percent[3], percent[3]]
+    // incremento desconto pra defecintes < 26 anos 
+    const percent_def_26 = [ias * 0, ias * 0.2, ias * 0.25, ias * 0.3, ias * 0.3];
     // Capacitação
     const capacitacao = [0, ias * 0.05, ias * 0.09, ias * 0.12, ias * 0.14, ias * 0.15, ias * 0.16, ias * 0.17, ias * 0.18, ias, 0.19];
     const agregado_apoio = [381, 535, 535, 535, 672, 675];
@@ -1516,7 +1517,7 @@ fm- Familía Monoparental/
 
         // Descontos 
 
-        let desc_n_dependentes = [percent[0], percent[1], percent[2] + inc_descontos_dependentes[0], percent[3] + inc_descontos_dependentes[1], percent[3] + inc_descontos_dependentes[3]];
+        let desc_n_dependentes = [percent[0], percent[1], percent[2], percent[3], percent[3]];
 
         let familia_monoparental = val_fm;
         let tipologia = val_tipologia;
@@ -1549,15 +1550,15 @@ fm- Familía Monoparental/
         }
         // n_dependentes_com_def
         if (n_dependentes_com_def > 4) {
-            n_dependentes_com_def = desc_n_dependentes[4];
+            n_dependentes_com_def = percent_def_26[4];
         } else {
-            n_dependentes_com_def = desc_n_dependentes[n_dependentes_com_def];
+            n_dependentes_com_def = percent_def_26[n_dependentes_com_def];
         }
 
         // defeciencia s_60
         n_defeciencia = n_defeciencia * apoio_id_def;
 
-        // idosos com mias de 65 
+        // idosos com mais de 65 
         n_65 = n_65 * apoio_id_def;
 
         //familia mono parental
@@ -1588,8 +1589,8 @@ fm- Familía Monoparental/
         z = roundNumber(apoiomensal * 0.1);
         // -------------------------------------
 
-        const totalValorApoio = w - ((a - b) * ((w - z) / (a - c))) - // calculo do valor do apoio 
-            console.log("a" + a, "b" + b, "c" + c, "w" + w, "z" + z);
+        const totalValorApoio = w - ((a - b) * ((w - z) / (a - c))) // calculo do valor do apoio 
+        console.log("a" + a, "b" + b, "c" + c, "w" + w, "z" + z);
         if (totalValorApoio >= apoiomensal * 0.5) {
             valor_apoio = w;
         } else {
@@ -1599,8 +1600,6 @@ fm- Familía Monoparental/
 
         if (valor_apoio > vr && vr > 0) {
             valor_apoio = vr;
-        } else {
-            valor_apoio = vr * 0.5;
         }
         console.log(valor_apoio, "va");
 

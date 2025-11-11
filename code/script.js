@@ -7,12 +7,14 @@
 
 
 //IAS
-const ias = 522.50;
+const ias = 509.26;
 // Valor de apoio por cada Individuo com defeciencia superior a 65% 
 const apoio_id_def = ias * 0.10;
 // Valor de desconto por cada dependednte
 const percent = [ias * 0, ias * 0.1, ias * 0.15, ias * 0.2, ias * 0.2];
-const inc_descontos_dependentes = [percent[1] + percent[0], percent[2] + percent[1], percent[3] + percent[2], percent[3] + percent[2] + percent[1]]
+const inc_descontos_dependentes = [percent[0], percent[1], percent[2], percent[3], percent[3]]
+// incremento desconto pra defecintes < 26 anos 
+const percent_def_26 = [ias * 0, ias * 0.2, ias * 0.25, ias * 0.3, ias * 0.3];
 // Capacitação
 const capacitacao = [0, ias * 0.05, ias * 0.09, ias * 0.12, ias * 0.14, ias * 0.15, ias * 0.16, ias * 0.17, ias * 0.18, ias, 0.19];
 const agregado_apoio = [381, 535, 535, 535, 672, 675];
@@ -149,7 +151,7 @@ function submitForm() {
     display_resultados.classList.remove('visible');
     input_agregado.classList.remove('erro');
 
-    if(vr<=0){
+    if (vr <= 0) {
         document.getElementById('vr').classList.add('error');
     }
 
@@ -183,7 +185,7 @@ function submitForm() {
 
     // Descontos 
 
-    let desc_n_dependentes = [percent[0], percent[1], percent[2] + inc_descontos_dependentes[0], percent[3] + inc_descontos_dependentes[1], percent[3] + inc_descontos_dependentes[3]];
+    let desc_n_dependentes = [percent[0], percent[1], percent[2], percent[3], percent[3]];
 
     let familia_monoparental = val_fm;
     let tipologia = val_tipologia;
@@ -216,15 +218,15 @@ function submitForm() {
     }
     // n_dependentes_com_def
     if (n_dependentes_com_def > 4) {
-        n_dependentes_com_def = desc_n_dependentes[4];
+        n_dependentes_com_def = percent_def_26[4];
     } else {
-        n_dependentes_com_def = desc_n_dependentes[n_dependentes_com_def];
+        n_dependentes_com_def = percent_def_26[n_dependentes_com_def];
     }
 
     // defeciencia s_60
     n_defeciencia = n_defeciencia * apoio_id_def;
 
-    // idosos com mias de 65 
+    // idosos com mais de 65 
     n_65 = n_65 * apoio_id_def;
 
     //familia mono parental
@@ -255,8 +257,8 @@ function submitForm() {
     z = roundNumber(apoiomensal * 0.1);
     // -------------------------------------
 
-    const totalValorApoio = w - ((a - b) * ((w - z) / (a - c))) - // calculo do valor do apoio 
-        console.log("a" + a, "b" + b, "c" + c, "w" + w, "z" + z);
+    const totalValorApoio = w - ((a - b) * ((w - z) / (a - c))) // calculo do valor do apoio 
+    console.log("a" + a, "b" + b, "c" + c, "w" + w, "z" + z);
     if (totalValorApoio >= apoiomensal * 0.5) {
         valor_apoio = w;
     } else {
@@ -266,8 +268,6 @@ function submitForm() {
 
     if (valor_apoio > vr && vr > 0) {
         valor_apoio = vr;
-    }else {
-        valor_apoio=vr*0.5;
     }
     console.log(valor_apoio, "va");
 
@@ -291,38 +291,38 @@ function submitForm() {
 
 
     if (!isNaN(valor_apoio) && !isNaN(t_valor_anual) && !isNaN(t_valor_m_corregidos) && !isNaN(w) && !isNaN(resul_RMC)) {
-        if(vr<=0){
+        if (vr <= 0) {
             error_content.innerHTML = 'Por favor indique o valor da renda mensal';
             display_erro.classList.add('visible');
             btn_clean.classList.add("visible");
-        }else
-        if (valor_apoio > 0 && resul_RMC <= 4 * ias) {
-            console.log("valor 2  " + valor_apoio);
-            // Injetar valores 
-            resul_valor_mensais.innerHTML = t_valor_m_corregidos.toFixed(2) + '€';
-            resul_valor_anuais.innerHTML = t_valor_anual.toFixed(2) + '€';
-            resul_valor_rmc.innerHTML = resul_RMC.toFixed(2) + '€';
-            resul_valor_apoio_maximo.innerHTML = w.toFixed(2) + '€';
-            resul_tipologia.innerHTML = tipologia;
-            resul_apoio.innerHTML = valor_apoio + '€';
+        } else
+            if (valor_apoio > 0 && resul_RMC <= 4 * ias) {
+                console.log("valor 2  " + valor_apoio);
+                // Injetar valores 
+                resul_valor_mensais.innerHTML = t_valor_m_corregidos.toFixed(2) + '€';
+                resul_valor_anuais.innerHTML = t_valor_anual.toFixed(2) + '€';
+                resul_valor_rmc.innerHTML = resul_RMC.toFixed(2) + '€';
+                resul_valor_apoio_maximo.innerHTML = w.toFixed(2) + '€';
+                resul_tipologia.innerHTML = tipologia;
+                resul_apoio.innerHTML = valor_apoio + '€';
 
 
 
-            btn_clean.classList.add("visible");
-            display_resultados.classList.add('visible');
-            btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                btn_clean.classList.add("visible");
+                display_resultados.classList.add('visible');
+                btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
 
 
-        } else {
+            } else {
 
-            error_content.innerHTML = 'Não se enquadra nos parâmetros para receber o apoio <a href="https://www.bragahabit.com/_files/ugd/71f667_7c85568fea60487a9fe3c97185891c34.pdf">Consulte o Regulamento</a>';
-            display_erro.classList.add('visible');
-            btn_clean.classList.add("visible");
-            btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                error_content.innerHTML = 'Não se enquadra nos parâmetros para receber o apoio <a href="https://www.bragahabit.com/_files/ugd/71f667_7c85568fea60487a9fe3c97185891c34.pdf">Consulte o Regulamento</a>';
+                display_erro.classList.add('visible');
+                btn_clean.classList.add("visible");
+                btn_clean.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
 
-        }
+            }
 
     } else {
 
